@@ -56,3 +56,5 @@ app.get('/api/historical/:ticker', async (req, res) => {
 app.listen(PORT, () => {
   console.log(`Server running safely on port ${PORT}`);
 });
+
+export default app;

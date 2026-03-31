@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_BASE = 'http://localhost:3001/api';
+const API_BASE = import.meta.env.PROD ? '/api' : 'http://localhost:3001/api';
 
 export const fetchQuote = async (ticker: string) => {
   const res = await axios.get(`${API_BASE}/quote/${ticker}`);
