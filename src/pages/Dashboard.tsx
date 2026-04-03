@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
-import { Activity, Search, LineChart, ShieldAlert, Target, TrendingDown, ArrowRight } from 'lucide-react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Activity, Target, TrendingDown, ArrowRight, Filter, ArrowDownUp } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 import { analyzeMarketSignal, runGlobalScan } from '../utils/engine';
 import { STRATEGIES } from '../services/api';
 import type { ScanResult } from '../utils/engine';
@@ -10,6 +10,9 @@ export const Dashboard = () => {
   const [marketSignal, setMarketSignal] = useState({ trend: 'Loading...', rsi: '-', message: '' });
   const [globalMatches, setGlobalMatches] = useState<ScanResult[]>([]);
   const [scanning, setScanning] = useState(true);
+  
+  const [filterStrategy, setFilterStrategy] = useState<string>('ALL');
+  const [sortBy, setSortBy] = useState<string>('default');
 
   useEffect(() => {
     const fetchData = async () => {
@@ -43,7 +46,7 @@ export const Dashboard = () => {
     <div className="animate-fade-in" style={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
 
       {/* Top Header & Market Signal */}
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '2rem' }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '2rem', flexWrap: 'wrap', gap: '2rem' }}>
         <div>
           <h1 className="gradient-text" style={{ fontSize: '3.5rem', marginBottom: '0.5rem' }}>Welcome to SwingPro</h1>
           <p style={{ color: 'var(--text-secondary)', fontSize: '1.1rem', maxWidth: '600px' }}>
@@ -51,7 +54,7 @@ export const Dashboard = () => {
           </p>
         </div>
 
-        <div className="card glass-panel" style={{ minWidth: '300px', borderTop: `4px solid ${marketSignal.trend.includes('Bull') ? 'var(--stat-up)' : marketSignal.trend.includes('Bear') ? 'var(--stat-down)' : 'var(--stat-neutral)'}` }}>
+        <div className="card glass-panel" style={{ flex: '1 1 300px', maxWidth: '400px', borderTop: `4px solid ${marketSignal.trend.includes('Bull') ? 'var(--stat-up)' : marketSignal.trend.includes('Bear') ? 'var(--stat-down)' : 'var(--stat-neutral)'}` }}>
           <p style={{ color: 'var(--text-secondary)', fontSize: '0.875rem', marginBottom: '0.5rem', fontWeight: 600 }}>NIFTY 50 OVERVIEW</p>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'end', marginBottom: '0.5rem' }}>
             <h2 style={{ fontSize: '1.5rem', margin: 0, color: 'var(--text-primary)' }}>{marketSignal.trend}</h2>
@@ -61,53 +64,32 @@ export const Dashboard = () => {
         </div>
       </div>
 
-      {/* Primary Navigation Cards */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '1.5rem', marginBottom: '2rem' }}>
-        <Link to="/screener" style={{ textDecoration: 'none' }}>
-          <div className="card" style={{ cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '1rem', padding: '1.25rem' }}>
-            <div style={{ background: 'var(--bg-tertiary)', borderRadius: '12px', padding: '1rem', color: 'var(--accent-cyan)' }}>
-              <Search size={24} />
-            </div>
-            <div>
-              <h3 style={{ fontSize: '1.1rem', color: 'var(--text-primary)', margin: 0 }}>Custom Screener</h3>
-              <p style={{ color: 'var(--text-tertiary)', fontSize: '0.875rem', margin: 0 }}>Manual search & filter criteria</p>
-            </div>
-          </div>
-        </Link>
 
-        <Link to="/backtester" style={{ textDecoration: 'none' }}>
-          <div className="card" style={{ cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '1rem', padding: '1.25rem' }}>
-            <div style={{ background: 'var(--bg-tertiary)', borderRadius: '12px', padding: '1rem', color: 'var(--accent-purple)' }}>
-              <LineChart size={24} />
-            </div>
-            <div>
-              <h3 style={{ fontSize: '1.1rem', color: 'var(--text-primary)', margin: 0 }}>Backtest Engine</h3>
-              <p style={{ color: 'var(--text-tertiary)', fontSize: '0.875rem', margin: 0 }}>Verify past mathematical odds</p>
-            </div>
-          </div>
-        </Link>
-
-        <Link to="/calculator" style={{ textDecoration: 'none' }}>
-          <div className="card" style={{ cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '1rem', padding: '1.25rem' }}>
-            <div style={{ background: 'var(--bg-tertiary)', borderRadius: '12px', padding: '1rem', color: 'var(--stat-up)' }}>
-              <ShieldAlert size={24} />
-            </div>
-            <div>
-              <h3 style={{ fontSize: '1.1rem', color: 'var(--text-primary)', margin: 0 }}>Trade Calculator</h3>
-              <p style={{ color: 'var(--text-tertiary)', fontSize: '0.875rem', margin: 0 }}>Prevent over-risking capital</p>
-            </div>
-          </div>
-        </Link>
-      </div>
 
       {/* Global Auto-Scanner Results */}
       <div className="card glass-panel" style={{ flex: 1, display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem', flexWrap: 'wrap', gap: '1rem' }}>
           <h3 style={{ fontSize: '1.25rem', margin: 0, display: 'flex', alignItems: 'center', gap: '8px' }}>
             <Activity size={20} className="text-accent-blue" />
             Live Global Matches & Action Plans
           </h3>
-          <span style={{ fontSize: '0.875rem', color: 'var(--text-tertiary)' }}>Scanning top liquid components for exact entry zones</span>
+          <div style={{ display: 'flex', gap: '1rem', alignItems: 'center', flexWrap: 'wrap' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', background: 'var(--bg-tertiary)', padding: '0.4rem 0.8rem', borderRadius: '8px', flex: 1 }}>
+              <Filter size={16} color="var(--text-secondary)" />
+              <select className="select" style={{ padding: '0.2rem 1.5rem 0.2rem 0.5rem', fontSize: '0.875rem', minWidth: '150px' }} value={filterStrategy} onChange={(e) => setFilterStrategy(e.target.value)}>
+                <option value="ALL">All Strategies</option>
+                {STRATEGIES.map(s => <option key={s.id} value={s.id}>{s.name}</option>)}
+              </select>
+            </div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', background: 'var(--bg-tertiary)', padding: '0.4rem 0.8rem', borderRadius: '8px', flex: 1 }}>
+              <ArrowDownUp size={16} color="var(--text-secondary)" />
+              <select className="select" style={{ padding: '0.2rem 1.5rem 0.2rem 0.5rem', fontSize: '0.875rem' }} value={sortBy} onChange={(e) => setSortBy(e.target.value)}>
+                <option value="default">Default</option>
+                <option value="winProb">Highest Win Prob</option>
+                <option value="riskReward">Best Risk:Reward</option>
+              </select>
+            </div>
+          </div>
         </div>
 
         {scanning ? (
@@ -116,14 +98,16 @@ export const Dashboard = () => {
             <p>Scanning the entire universe for actionable setups...</p>
           </div>
         ) : globalMatches.length > 0 ? (
-          <div style={{ overflowY: 'auto', flex: 1 }}>
+          <div style={{ overflow: 'auto', flex: 1, WebkitOverflowScrolling: 'touch' }}>
             <table className="data-table">
               <thead>
                 <tr>
                   <th>Ticker</th>
                   <th>Setup Pattern</th>
                   <th>Signal</th>
-                  <th>Entry (LTP)</th>
+                  <th>Win Prob</th>
+                  <th>Action Time</th>
+                  <th>Buy Zone (LTP)</th>
                   <th>Stop Loss</th>
                   <th>Target</th>
                   <th>R:R</th>
@@ -131,7 +115,14 @@ export const Dashboard = () => {
                 </tr>
               </thead>
               <tbody>
-                {globalMatches.map((r, i) => (
+                {globalMatches
+                  .filter(m => filterStrategy === 'ALL' || m.strategyId === filterStrategy)
+                  .sort((a, b) => {
+                     if (sortBy === 'winProb') return b.winProbability - a.winProbability;
+                     if (sortBy === 'riskReward') return parseFloat(b.riskReward.split(':')[1]) - parseFloat(a.riskReward.split(':')[1]);
+                     return 0;
+                  })
+                  .map((r, i) => (
                   <tr key={i}>
                     <td style={{ fontWeight: 600 }}>{r.stock.symbol.split('.')[0]}</td>
                     <td>
@@ -177,7 +168,19 @@ export const Dashboard = () => {
                         {STRATEGIES.find(s => s.name === r.strategyName || s.id === r.strategyId)?.action || 'BUY'}
                       </span>
                     </td>
-                    <td style={{ fontWeight: 500 }}>₹{r.entry.toFixed(2)}</td>
+                    <td>
+                      <span className="badge badge-up" style={{ minWidth: '40px', textAlign: 'center' }}>
+                        {r.winProbability}%
+                      </span>
+                    </td>
+                    <td>
+                      <span style={{ fontSize: '0.8rem', color: 'var(--text-tertiary)' }}>{r.actionTime}</span>
+                    </td>
+                    <td style={{ fontWeight: 500 }}>
+                      <span style={{ color: 'var(--accent-cyan)' }}>₹{r.buyZone[0].toFixed(2)} - ₹{r.buyZone[1].toFixed(2)}</span>
+                      <br />
+                      <span style={{ fontSize: '0.75rem', color: 'var(--text-tertiary)' }}>(LTP: ₹{r.price.toFixed(2)})</span>
+                    </td>
                     <td style={{ color: 'var(--stat-down)', display: 'flex', alignItems: 'center', gap: '4px' }}>
                       <TrendingDown size={14} /> ₹{r.stopLoss.toFixed(2)}
                     </td>

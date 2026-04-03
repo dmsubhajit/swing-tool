@@ -16,33 +16,58 @@ export const fetchHistorical = async (ticker: string, period1?: string, period2?
   return res.data;
 };
 
-// Expanded list of liquid Indian stocks & Nifty 50 components
+// Exact Nifty 50 Components
 export const INDIAN_STOCKS = [
-  { symbol: 'RELIANCE.NS', name: 'Reliance Ind' },
+  { symbol: 'RELIANCE.NS', name: 'Reliance Industries' },
+  { symbol: 'TCS.NS', name: 'Tata Consultancy Services' },
   { symbol: 'HDFCBANK.NS', name: 'HDFC Bank' },
   { symbol: 'ICICIBANK.NS', name: 'ICICI Bank' },
-  { symbol: 'INFY.NS', name: 'Infosys' },
-  { symbol: 'TCS.NS', name: 'TCS' },
-  { symbol: 'TATAMOTORS.NS', name: 'Tata Motors' },
-  { symbol: 'BAJFINANCE.NS', name: 'Bajaj Finance' },
-  { symbol: 'TITAN.NS', name: 'Titan Company' },
-  { symbol: 'LT.NS', name: 'Larsen & Toubro' },
-  { symbol: 'WIPRO.NS', name: 'Wipro' },
-  { symbol: 'SBIN.NS', name: 'State Bank' },
-  { symbol: 'KOTAKBANK.NS', name: 'Kotak Bank' },
-  { symbol: 'AXISBANK.NS', name: 'Axis Bank' },
-  { symbol: 'MARUTI.NS', name: 'Maruti Suzuki' },
-  { symbol: 'HINDUNILVR.NS', name: 'HUL' },
-  { symbol: 'ITC.NS', name: 'ITC' },
-  { symbol: 'SUNPHARMA.NS', name: 'Sun Pharma' },
   { symbol: 'BHARTIARTL.NS', name: 'Bharti Airtel' },
-  { symbol: 'M&M.NS', name: 'M&M' },
+  { symbol: 'SBIN.NS', name: 'State Bank of India' },
+  { symbol: 'INFY.NS', name: 'Infosys' },
+  { symbol: 'ITC.NS', name: 'ITC' },
+  { symbol: 'HINDUNILVR.NS', name: 'Hindustan Unilever' },
+  { symbol: 'LT.NS', name: 'Larsen & Toubro' },
+  { symbol: 'BAJFINANCE.NS', name: 'Bajaj Finance' },
+  { symbol: 'HCLTECH.NS', name: 'HCL Technologies' },
+  { symbol: 'MARUTI.NS', name: 'Maruti Suzuki' },
+  { symbol: 'SUNPHARMA.NS', name: 'Sun Pharma' },
+  { symbol: 'TATAMOTORS.NS', name: 'Tata Motors' },
+  { symbol: 'KOTAKBANK.NS', name: 'Kotak Bank' },
+  { symbol: 'M&M.NS', name: 'Mahindra & Mahindra' },
+  { symbol: 'AXISBANK.NS', name: 'Axis Bank' },
   { symbol: 'ASIANPAINT.NS', name: 'Asian Paints' },
-  { symbol: 'NTPC.NS', name: 'NTPC' },
+  { symbol: 'WIPRO.NS', name: 'Wipro' },
+  { symbol: 'ULTRACEMCO.NS', name: 'UltraTech Cement' },
   { symbol: 'POWERGRID.NS', name: 'Power Grid' },
-  { symbol: 'ULTRACEMCO.NS', name: 'UltraTech' },
+  { symbol: 'NTPC.NS', name: 'NTPC' },
+  { symbol: 'BAJAJFINSV.NS', name: 'Bajaj Finserv' },
+  { symbol: 'ONGC.NS', name: 'ONGC' },
+  { symbol: 'JSWSTEEL.NS', name: 'JSW Steel' },
+  { symbol: 'TATASTEEL.NS', name: 'Tata Steel' },
+  { symbol: 'COALINDIA.NS', name: 'Coal India' },
+  { symbol: 'ADANIENT.NS', name: 'Adani Enterprises' },
+  { symbol: 'ADANIPORTS.NS', name: 'Adani Ports' },
+  { symbol: 'HDFCLIFE.NS', name: 'HDFC Life' },
+  { symbol: 'SBILIFE.NS', name: 'SBI Life' },
+  { symbol: 'GRASIM.NS', name: 'Grasim' },
+  { symbol: 'TITAN.NS', name: 'Titan Company' },
   { symbol: 'TECHM.NS', name: 'Tech Mahindra' },
-  { symbol: 'HCLTECH.NS', name: 'HCL Tech' }
+  { symbol: 'BRITANNIA.NS', name: 'Britannia' },
+  { symbol: 'NESTLEIND.NS', name: 'Nestle India' },
+  { symbol: 'EICHERMOT.NS', name: 'Eicher Motors' },
+  { symbol: 'INDUSINDBK.NS', name: 'IndusInd Bank' },
+  { symbol: 'CIPLA.NS', name: 'Cipla' },
+  { symbol: 'DRREDDY.NS', name: 'Dr. Reddy Labs' },
+  { symbol: 'APOLLOHOSP.NS', name: 'Apollo Hospitals' },
+  { symbol: 'TRENT.NS', name: 'Trent' },
+  { symbol: 'BEL.NS', name: 'Bharat Electronics' },
+  { symbol: 'SHRIRAMFIN.NS', name: 'Shriram Finance' },
+  { symbol: 'HINDALCO.NS', name: 'Hindalco' },
+  { symbol: 'BAJAJ-AUTO.NS', name: 'Bajaj Auto' },
+  { symbol: 'HEROMOTOCO.NS', name: 'Hero MotoCorp' },
+  { symbol: 'TATACONSUM.NS', name: 'Tata Consumer' },
+  { symbol: 'BPCL.NS', name: 'BPCL' }
 ];
 
 export const STRATEGIES = [
@@ -94,6 +119,36 @@ export const STRATEGIES = [
       'Primary uptrend confirmed (50 DMA > 200 DMA)',
       'Price pulls back to within 2-3% of 50 DMA support',
       'Low-risk entry point for trend continuation'
+    ]
+  },
+  { 
+    id: 'ema_death_cross', 
+    name: '6. EMA Death Cross', 
+    action: 'SELL',
+    rules: [
+      '9 EMA crosses below 21 EMA',
+      'Confirms short-term bearish momentum',
+      'Strongest when combined with high selling volume'
+    ]
+  },
+  { 
+    id: 'bearish_engulfing', 
+    name: '7. Bearish Engulfing', 
+    action: 'SELL',
+    rules: [
+      'Current red candle fully engulfs previous green candle',
+      'Occurs after an upward price sequence',
+      'High probability trend reversal to the downside'
+    ]
+  },
+  { 
+    id: 'support_breakdown', 
+    name: '8. Support Breakdown (50 DMA)', 
+    action: 'SELL',
+    rules: [
+      'Price breaks and closes below the 50-day moving average',
+      'Volume is higher than average',
+      'Indicates a major shift from bullish to bearish sentiment'
     ]
   }
 ];

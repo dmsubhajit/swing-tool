@@ -84,3 +84,15 @@ export function isBullishEngulfing(candles: OHLCV[]): boolean {
   const bodyEngulfs = curr.open <= prev.close && curr.close >= prev.open;
   return prevIsRed && currIsGreen && bodyEngulfs;
 }
+
+export function isBearishEngulfing(candles: OHLCV[]): boolean {
+  if (candles.length < 2) return false;
+  const curr = candles[candles.length - 1];
+  const prev = candles[candles.length - 2];
+
+  const prevIsGreen = prev.close > prev.open;
+  const currIsRed = curr.close < curr.open;
+  
+  const bodyEngulfs = curr.open >= prev.close && curr.close <= prev.open;
+  return prevIsGreen && currIsRed && bodyEngulfs;
+}

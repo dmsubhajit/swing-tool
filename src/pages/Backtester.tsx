@@ -76,7 +76,7 @@ export const Backtester = () => {
       <h1 className="gradient-text" style={{ fontSize: '2.5rem', marginBottom: '0.5rem' }}>Backtest Engine</h1>
       <p style={{ color: 'var(--text-secondary)', marginBottom: '2rem' }}>Evaluate the top 5 historical strategies on Indian Stocks over the last 3 years.</p>
       
-      <div className="card" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr auto', gap: '1.5rem', marginBottom: '2rem', alignItems: 'end' }}>
+      <div className="card" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1.5rem', marginBottom: '2rem', alignItems: 'end' }}>
         <div>
           <label style={{ display: 'block', marginBottom: '0.5rem', fontSize: '0.875rem', color: 'var(--text-secondary)' }}>Select Stock</label>
           <select className="select" value={ticker} onChange={e => setTicker(e.target.value)}>
@@ -134,7 +134,7 @@ export const Backtester = () => {
       {results ? (
         <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
           
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '1.5rem' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))', gap: '1.5rem' }}>
             <div className="card">
               <p style={{ color: 'var(--text-secondary)', fontSize: '0.875rem' }}>Net Return (3Y)</p>
               <div className="metric-value" style={{ color: Number(results.returnPct) > 0 ? 'var(--stat-up)' : 'var(--stat-down)' }}>

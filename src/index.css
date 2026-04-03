@@ -275,3 +275,67 @@ h1, h2, h3, h4, h5, h6 {
 .group:hover .tooltip {
   display: block !important;
 }
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+  .app-container {
+    flex-direction: column;
+  }
+
+  .sidebar {
+    width: 100%;
+    order: 2;
+    border-right: none;
+    border-top: 1px solid var(--border-glass);
+    position: fixed;
+    bottom: 0;
+    z-index: 999;
+    padding: 0 !important;
+    height: 70px;
+    background: rgba(18, 18, 28, 0.95);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+  }
+
+  /* Hide the Header logo and Footer text in the sidebar on mobile */
+  .sidebar > div {
+    display: none !important;
+  }
+
+  /* Override inline styles for Nav */
+  .sidebar > nav {
+    flex-direction: row !important;
+    width: 100%;
+    height: 100%;
+    justify-content: space-around;
+    align-items: center;
+    padding: 0 !important;
+  }
+
+  .nav-link {
+    flex-direction: column;
+    gap: 4px !important;
+    font-size: 0.7rem !important;
+    padding: 0.5rem !important;
+    border-left: none !important;
+    border-top: 3px solid transparent;
+    justify-content: center;
+    border-radius: 0;
+  }
+
+  .nav-link.active {
+    border-top: 3px solid var(--accent-cyan);
+    background: transparent !important;
+  }
+
+  .main-content {
+    order: 1;
+    padding: 1rem !important;
+    padding-bottom: 85px !important; /* Space for the bottom nav */
+  }
+
+  /* Scale down massive headers */
+  h1 {
+    font-size: 2.2rem !important;
+  }
+}
